@@ -17,6 +17,7 @@ from skimage.transform import resize
 from accounts import account_entries, account_params, json_entries
 
 import sources
+from safe_tar import safe_extract
 
 DATASETS = ["random", "weather", "accounts", "flights", "all"]
 here = os.path.dirname(__file__)
@@ -86,7 +87,7 @@ def flights(small=None):
         print("- Extracting flight data... ", end='', flush=True)
         tar_path = os.path.join(data_dir, 'nycflights.tar.gz')
         with tarfile.open(tar_path, mode='r:gz') as flights:
-            flights.extractall('data/')
+            safe_extract(flights, data_dir)
 
         if small:
             for path in glob(os.path.join(data_dir, "nycflights", "*.csv")):
