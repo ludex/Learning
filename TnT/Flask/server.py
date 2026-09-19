@@ -1,5 +1,7 @@
-from flask import Flask, render_template
+import os
+
 import connexion
+from flask import render_template
 
 # Create the application instance
 # app = Flask(__name__, template_folder="templates")
@@ -19,5 +21,9 @@ def home():
 
 # Run the application if we're running in stand-alone mode
 if __name__ == '__main__':
-    # app.run(debug=True)
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # Debug mode and non-loopback binding require explicit local opt-in.
+    app.run(
+        host=os.getenv("FLASK_HOST", "127.0.0.1"),
+        port=int(os.getenv("FLASK_PORT", "5000")),
+        debug=os.getenv("FLASK_DEBUG") == "1",
+    )
